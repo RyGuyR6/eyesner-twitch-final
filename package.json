@@ -1,41 +1,25 @@
 {
-  "name": "eyesner-twitch-final",
-  "version": "3.0.0",
+  "name": "eyesner-lightning-twitch-package",
+  "version": "1.0.0",
   "private": true,
-  "description": "Reproducible Remotion-based Eyesner Twitch graphics and OBS package builder.",
   "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "start": "npm run studio",
     "preview": "remotion preview src/index.ts",
     "typecheck": "tsc --noEmit",
     "doctor": "tsx scripts/doctor.ts && npm run typecheck",
-    "render:preview": "tsx scripts/render-package.ts --preview",
-    "render:all": "tsx scripts/render-package.ts",
-    "render:static": "tsx scripts/render-package.ts --static-only",
+    "render:scenes": "tsx scripts/render-scenes.ts",
     "obs:package": "tsx scripts/generate-obs-package.ts",
-    "build": "tsx scripts/build-package.ts",
-    "build:obs": "npm run build",
-    "rebuild": "rimraf dist .remotion && npm run build",
-    "verify": "npm run doctor"
+    "build": "npm run doctor && npm run render:scenes && npm run obs:package"
   },
   "dependencies": {
-    "@remotion/bundler": "^4.0.0",
     "@remotion/cli": "^4.0.0",
     "@remotion/renderer": "^4.0.0",
-    "chalk": "^5.3.0",
-    "execa": "^9.5.0",
     "fs-extra": "^11.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "remotion": "^4.0.0",
-    "rimraf": "^6.0.1",
-    "sharp": "^0.33.5",
-    "tsx": "^4.19.2",
-    "zod": "^3.24.1"
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
