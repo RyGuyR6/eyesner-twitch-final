@@ -5,9 +5,9 @@ $mediaRoot = Join-Path $packageRoot 'media'
 $packageName = 'Eyesner Lightning Storm V2'
 $sceneCollectionName = 'Eyesner Lightning Storm V2'
 $sceneCollectionFileName = 'Eyesner-Lightning-Storm-V2.json'
-# UUID OBS uses for the built-in libobs main canvas in exported collections.
+# UUID that OBS uses to reference the built-in libobs main canvas in exported scene collections.
 $sceneCanvasUuid = '6c69626f-6273-4c00-9d88-c5136d61696e'
-# Match the prev_ver marker copied from OBS-exported scene collection JSON records.
+# Match the prev_ver marker copied from OBS-exported scene collection JSON records and update it if OBS changes the exported format marker in a future release.
 $obsSceneFormatVersion = 520159234
 # Match the default collection scaling metadata OBS writes in exported scene collections.
 $obsCollectionScalingLevel = -7
