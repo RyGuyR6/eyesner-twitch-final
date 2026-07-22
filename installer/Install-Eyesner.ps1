@@ -5,10 +5,12 @@ $mediaRoot = Join-Path $packageRoot 'media'
 $packageName = 'Eyesner Lightning Storm V2'
 $sceneCollectionName = 'Eyesner Lightning Storm V2'
 $sceneCollectionFileName = 'Eyesner-Lightning-Storm-V2.json'
-# OBS uses this built-in canvas UUID for the main scene canvas in exported collections.
+# Hex-encoded UUID OBS uses for the built-in libobs main canvas in exported collections.
 $sceneCanvasUuid = '6c69626f-6273-4c00-9d88-c5136d61696e'
-# Match the prev_ver marker that OBS writes into scene collection JSON records.
+# Match the prev_ver marker copied from OBS-exported scene collection JSON records.
 $obsSceneFormatVersion = 520159234
+# Match the default collection scaling metadata OBS writes in exported scene collections.
+$obsCollectionScalingLevel = -7
 $installRootBase = [Environment]::GetFolderPath('MyVideos')
 if ([string]::IsNullOrWhiteSpace($installRootBase)) {
     $installRootBase = [Environment]::GetFolderPath('MyDocuments')
@@ -251,7 +253,7 @@ function New-SceneCollection {
         transition_duration = 300
         preview_locked = $false
         scaling_enabled = $true
-        scaling_level = -7
+        scaling_level = $obsCollectionScalingLevel
         scaling_off_x = 0.0
         scaling_off_y = 0.0
         'virtual-camera' = [ordered]@{ type2 = 3 }
