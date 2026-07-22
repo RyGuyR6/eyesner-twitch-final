@@ -6,6 +6,7 @@ $packageName = 'Eyesner Lightning Storm V2'
 $sceneCollectionName = 'Eyesner Lightning Storm V2'
 $sceneCollectionFileName = 'Eyesner-Lightning-Storm-V2.json'
 $sceneCanvasUuid = '6c69626f-6273-4c00-9d88-c5136d61696e'
+$obsSceneFormatVersion = 520159234
 $installRootBase = [Environment]::GetFolderPath('MyVideos')
 if ([string]::IsNullOrWhiteSpace($installRootBase)) {
     $installRootBase = [Environment]::GetFolderPath('MyDocuments')
@@ -23,7 +24,7 @@ if ([string]::IsNullOrWhiteSpace($installRootBase)) {
 $installRoot = Join-Path $installRootBase $packageName
 $appDataRoot = $env:APPDATA
 if ([string]::IsNullOrWhiteSpace($appDataRoot) -and -not [string]::IsNullOrWhiteSpace($userProfile)) {
-    $appDataRoot = Join-Path $userProfile 'AppData\\Roaming'
+    $appDataRoot = Join-Path $userProfile 'AppData\Roaming'
 }
 if ([string]::IsNullOrWhiteSpace($appDataRoot)) {
     $appDataRoot = Join-Path $packageRoot 'AppData'
@@ -102,7 +103,7 @@ function New-BaseSourceRecord {
     )
 
     [ordered]@{
-        prev_ver = 520159234
+        prev_ver = $obsSceneFormatVersion
         name = $Name
         uuid = $Uuid
         id = $Id
