@@ -2,18 +2,23 @@ import {execFileSync} from 'node:child_process';
 import {accessSync, constants} from 'node:fs';
 import fs from 'fs-extra';
 const scenes=['StartingSoon','BeRightBack','StreamEnding','Intermission','GameplayOverlay','FollowerAlert','SubscriberAlert','LightningStinger'];
-const platformBrowserExecutables=process.platform==='darwin'
- ? ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','/Applications/Chromium.app/Contents/MacOS/Chromium']
- : process.platform==='win32'
- ? ['C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe','C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe','C:\\Program Files\\Chromium\\Application\\chrome.exe']
- : ['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium','/usr/bin/chromium-browser'];
+const getPlatformBrowserExecutables=()=>{
+ switch(process.platform){
+  case 'darwin':
+   return ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome','/Applications/Chromium.app/Contents/MacOS/Chromium'];
+  case 'win32':
+   return ['C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe','C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe','C:\\Program Files\\Chromium\\Application\\chrome.exe'];
+  default:
+   return ['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium','/usr/bin/chromium-browser'];
+ }
+};
 const browserExecutableCandidates=[
  process.env.REMOTION_BROWSER_EXECUTABLE,
  process.env.CHROME_PATH,
  process.env.PUPPETEER_EXECUTABLE_PATH,
- ...platformBrowserExecutables,
-].filter((candidate): candidate is string => Boolean(candidate));
-const hasExecutableAccess=(candidate:string)=>{
+ ...getPlatformBrowserExecutables(),
+].filter((candidate): candidate is string => candidate!=null);
+const isExecutableAccessible=(candidate:string)=>{
  try{
   accessSync(candidate,constants.X_OK);
   return true;
@@ -21,7 +26,7 @@ const hasExecutableAccess=(candidate:string)=>{
   return false;
  }
 };
-const browserExecutable=browserExecutableCandidates.find((candidate)=>hasExecutableAccess(candidate));
+const browserExecutable=browserExecutableCandidates.find((candidate)=>isExecutableAccessible(candidate));
 fs.ensureDirSync('dist/renders');
 if(browserExecutable) console.log(`Using browser executable: ${browserExecutable}`);
 else console.warn('No local browser executable found. Remotion will try to download Chrome Headless Shell.');
