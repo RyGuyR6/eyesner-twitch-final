@@ -5,12 +5,13 @@ $mediaRoot = Join-Path $packageRoot 'media'
 $packageName = 'Eyesner Lightning Storm V2'
 $sceneCollectionName = 'Eyesner Lightning Storm V2'
 $sceneCollectionFileName = 'Eyesner-Lightning-Storm-V2.json'
-# Hex-encoded UUID OBS uses for the built-in libobs main canvas in exported collections.
+# UUID OBS uses for the built-in libobs main canvas in exported collections.
 $sceneCanvasUuid = '6c69626f-6273-4c00-9d88-c5136d61696e'
 # Match the prev_ver marker copied from OBS-exported scene collection JSON records.
 $obsSceneFormatVersion = 520159234
 # Match the default collection scaling metadata OBS writes in exported scene collections.
 $obsCollectionScalingLevel = -7
+$obsQuickTransitionDuration = 300
 $installRootBase = [Environment]::GetFolderPath('MyVideos')
 if ([string]::IsNullOrWhiteSpace($installRootBase)) {
     $installRootBase = [Environment]::GetFolderPath('MyDocuments')
@@ -56,13 +57,13 @@ function Write-Step {
     Write-Host "[Eyesner] $Message" -ForegroundColor Cyan
 }
 
-function Test-ObsRunning {
+function Get-ObsProcesses {
     @(Get-Process -Name obs64, obs32, obs -ErrorAction SilentlyContinue)
 }
 
 function Wait-ForObsToClose {
     while ($true) {
-        $running = Test-ObsRunning
+        $running = Get-ObsProcesses
         if ($running.Count -eq 0) {
             return
         }
@@ -242,15 +243,15 @@ function New-SceneCollection {
         sources = $sources
         groups = @()
         quick_transitions = @(
-            [ordered]@{ name = 'Cut'; duration = 300; hotkeys = @(); id = 1; fade_to_black = $false },
-            [ordered]@{ name = 'Fade'; duration = 300; hotkeys = @(); id = 2; fade_to_black = $false },
-            [ordered]@{ name = 'Fade'; duration = 300; hotkeys = @(); id = 3; fade_to_black = $true }
+            [ordered]@{ name = 'Cut'; duration = $obsQuickTransitionDuration; hotkeys = @(); id = 1; fade_to_black = $false },
+            [ordered]@{ name = 'Fade'; duration = $obsQuickTransitionDuration; hotkeys = @(); id = 2; fade_to_black = $false },
+            [ordered]@{ name = 'Fade'; duration = $obsQuickTransitionDuration; hotkeys = @(); id = 3; fade_to_black = $true }
         )
         transitions = @()
         saved_projectors = @()
         canvases = @()
         current_transition = 'Fade'
-        transition_duration = 300
+        transition_duration = $obsQuickTransitionDuration
         preview_locked = $false
         scaling_enabled = $true
         scaling_level = $obsCollectionScalingLevel
