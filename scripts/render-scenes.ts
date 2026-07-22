@@ -12,12 +12,6 @@ const getPlatformBrowserExecutables = () => {
    return ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'];
  }
 };
-const browserExecutableCandidates = [
- process.env.REMOTION_BROWSER_EXECUTABLE,
- process.env.CHROME_PATH,
- process.env.PUPPETEER_EXECUTABLE_PATH,
- ...getPlatformBrowserExecutables(),
-].filter((candidate): candidate is string => candidate !== null && candidate !== undefined);
 const isExecutableAccessible = (candidate: string) => {
  try {
   accessSync(candidate, constants.X_OK);
@@ -26,7 +20,13 @@ const isExecutableAccessible = (candidate: string) => {
   return false;
  }
 };
-const browserExecutable = browserExecutableCandidates.find((candidate) => isExecutableAccessible(candidate));
+const browserExecutableCandidates = [
+ process.env.REMOTION_BROWSER_EXECUTABLE,
+ process.env.CHROME_PATH,
+ process.env.PUPPETEER_EXECUTABLE_PATH,
+ ...getPlatformBrowserExecutables(),
+].filter((candidate): candidate is string => candidate !== null && candidate !== undefined && candidate !== '');
+const browserExecutable = browserExecutableCandidates.find((candidate) => isExecutableAccessible(candidate)) ?? null;
 fs.ensureDirSync('dist/renders');
 if (browserExecutable) console.log(`Using browser executable: ${browserExecutable}`);
 else console.warn('No local browser executable found. Remotion will try to download Chrome Headless Shell.');
