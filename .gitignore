@@ -1,4 +1,6 @@
 node_modules/
 dist/
 .remotion/
+.cache/
+.DS_Store
 *.log
