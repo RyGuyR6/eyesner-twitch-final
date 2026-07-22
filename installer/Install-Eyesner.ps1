@@ -5,7 +5,9 @@ $mediaRoot = Join-Path $packageRoot 'media'
 $packageName = 'Eyesner Lightning Storm V2'
 $sceneCollectionName = 'Eyesner Lightning Storm V2'
 $sceneCollectionFileName = 'Eyesner-Lightning-Storm-V2.json'
+# OBS uses this built-in canvas UUID for the main scene canvas in exported collections.
 $sceneCanvasUuid = '6c69626f-6273-4c00-9d88-c5136d61696e'
+# Match the prev_ver marker that OBS writes into scene collection JSON records.
 $obsSceneFormatVersion = 520159234
 $installRootBase = [Environment]::GetFolderPath('MyVideos')
 if ([string]::IsNullOrWhiteSpace($installRootBase)) {
