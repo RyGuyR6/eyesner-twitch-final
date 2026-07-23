@@ -10,9 +10,7 @@
     "doctor": "tsx scripts/doctor.ts && npm run typecheck",
     "render:scenes": "tsx scripts/render-scenes.ts",
     "obs:package": "tsx scripts/generate-obs-package.ts",
-    "build": "npm run doctor && npm run render:scenes && npm run obs:package",
-    "build:premium": "npm run typecheck && npm run render:scenes",
-    "verify:premium": "for f in dist/renders/*; do echo \"===== $f =====\"; ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate,pix_fmt -show_entries format=duration,size,bit_rate -of default=noprint_wrappers=1 \"$f\"; done"
+    "build": "npm run doctor && npm run render:scenes && npm run obs:package"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
